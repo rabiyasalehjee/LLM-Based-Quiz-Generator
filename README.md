@@ -10,7 +10,7 @@ The backend uses Ollama to run DeepSeek-R1 LLM locally.
 
 1. Download & install Ollama
 
-    - 📥 Ollama Download
+    - Download [Ollama](https://ollama.com/)
     - Follow the instructions to install Ollama on your system.
 
 2. Pull the required model
@@ -18,3 +18,15 @@ The backend uses Ollama to run DeepSeek-R1 LLM locally.
     `ollama pull deepseek-r1:1.5b`
 
 This downloads the DeepSeek-R1 1.5B model required for trivia generation.
+
+3. (Optional) Create a virtual environment
+
+    `python -m venv env`
+
+4. Install dependencies
+
+    `pip install -r requirements.txt`
+
+5. Start the backend server
+
+    `python backend/app.py`
