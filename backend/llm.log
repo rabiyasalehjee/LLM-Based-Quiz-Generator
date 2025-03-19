@@ -1,3 +1,0 @@
-2025-03-19 15:44:47,942:INFO:Starting LLM call with prompt.
-2025-03-19 15:44:47,942:INFO:Running command: ['ollama', 'run', 'deepseek-r1:1.5b', '\n    Generate a trivia question with 4 multiple-choice answers.\n    Return ONLY a valid JSON object, with no extra text or explanations.\n\n    Format:\n    {\n        "question": "...",\n        "options": ["...", "...", "...", "..."],\n        "correctAnswer": "..."\n    }\n    ']
-2025-03-19 15:45:09,475:INFO:Clean JSON Response: {'trivia-question': 'Which city is the capital of France?', 'options': ['Berlin', 'London', 'Paris', 'Madrid'], 'correctAnswer': 'Paris'}
