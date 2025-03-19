@@ -81,7 +81,7 @@ def serve_frontend():
     return "Frontend not found!", 404
 
 def open_browser():
-    """Open the frontend in a browser after a delay."""
+    
     time.sleep(2)  
     logging.info("Opening browser for frontend.")
     webbrowser.open("http://127.0.0.1:5000")

@@ -3,7 +3,18 @@ document.getElementById('startQuiz').addEventListener('click', async function ()
     document.getElementById('quizContainer').classList.remove('hidden');
 
     startLoadingAnimation();
+    await fetchTriviaQuestion();
+});
 
+document.getElementById('nextQuestion').addEventListener('click', async function () {
+    resetUI();
+    startLoadingAnimation();
+    await fetchTriviaQuestion();
+});
+
+document.getElementById('skipQuestion').addEventListener('click', async function () {
+    resetUI();
+    startLoadingAnimation();
     await fetchTriviaQuestion();
 });
 
@@ -61,6 +72,8 @@ async function fetchTriviaQuestion(retries = 3) {
     });
 
     document.getElementById('optionsContainer').innerHTML = optionsHTML;
+
+    document.getElementById('skipQuestion').classList.remove('hidden');
 }
 
 function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
@@ -87,4 +100,14 @@ function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
             }
         });
     }
+
+    document.getElementById('nextQuestion').classList.remove('hidden');
+    document.getElementById('skipQuestion').classList.add('hidden');
+}
+
+function resetUI() {
+    document.getElementById('questionText').innerHTML = "Loading question...";
+    document.getElementById('optionsContainer').innerHTML = "";
+    document.getElementById('nextQuestion').classList.add('hidden');
+    document.getElementById('skipQuestion').classList.add('hidden');
 }

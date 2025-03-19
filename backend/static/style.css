@@ -146,3 +146,29 @@ button:hover {
     vertical-align: middle;
     margin-left: 10px;
 }
+
+#buttonsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#nextQuestion,
+#skipQuestion {
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(to right, #363795, #005C97);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+#nextQuestion:hover,
+#skipQuestion:hover {
+    transform: scale(1.05);
+}
