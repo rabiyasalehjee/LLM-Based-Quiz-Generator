@@ -11,12 +11,34 @@ document.getElementById('startQuiz').addEventListener('click', async function ()
         document.getElementById('questionText').innerHTML = "Error loading question.";
         return;
     }
+
     document.getElementById('questionText').innerHTML = data.question;
 
     let optionsHTML = "";
     data.options.forEach(option => {
-        optionsHTML += `<button class="option">${option}</button>`;
+        optionsHTML += `<button class="option" onclick="checkAnswer(this, '${option.trim()}', '${data.correctAnswer.trim()}')">${option}</button>`;
     });
 
     document.getElementById('optionsContainer').innerHTML = optionsHTML;
 });
+
+function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
+    const allOptions = document.querySelectorAll('.option');
+
+    allOptions.forEach(option => option.disabled = true);
+
+    if (chosenAnswer === correctAnswer) {
+        selectedOption.classList.add('correct');
+        selectedOption.innerHTML += " ✅";
+    } else {
+        selectedOption.classList.add('wrong');
+        selectedOption.innerHTML += " ❌";
+
+        allOptions.forEach(option => {
+            if (option.innerText.trim() === correctAnswer) {
+                option.classList.add('correct');
+                option.innerHTML += " ✅";
+            }
+        });
+    }
+}
