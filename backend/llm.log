@@ -1,0 +1,22 @@
+2025-03-19 16:20:11,933 - INFO - Starting Flask server...
+2025-03-19 16:20:12,097 - WARNING -  * Debugger is active!
+2025-03-19 16:20:12,109 - INFO -  * Debugger PIN: 123-530-883
+2025-03-19 16:20:13,975 - INFO - Opening browser for frontend.
+2025-03-19 16:20:14,780 - INFO - 127.0.0.1 - - [19/Mar/2025 16:20:14] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-19 16:20:14,889 - INFO - 127.0.0.1 - - [19/Mar/2025 16:20:14] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-03-19 16:20:14,947 - INFO - 127.0.0.1 - - [19/Mar/2025 16:20:14] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+2025-03-19 16:20:34,630 - INFO - Trivia API called. Fetching question...
+2025-03-19 16:20:34,630 - INFO - Sending prompt to LLM...
+2025-03-19 16:21:31,852 - INFO - LLM Response received successfully.
+2025-03-19 16:21:31,852 - INFO - Extracting JSON from response.
+2025-03-19 16:21:31,852 - INFO - Extracted Trivia JSON: {'question': 'Which type of bird is known for its ability to fly at very high altitudes without losing control?', 'options': ['A) Crow flying high', 'B) A bird that eats acorns', 'C) A bird often chasing prey', 'D) A bird using wings to fly'], 'correctAnswer': 'D'}
+2025-03-19 16:21:31,852 - INFO - Trivia question successfully retrieved and sent to frontend.
+2025-03-19 16:21:31,852 - INFO - 127.0.0.1 - - [19/Mar/2025 16:21:31] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-19 16:24:42,506 - INFO -  * Detected change in 'D:\\Trivia Game\\backend\\app.py', reloading
+2025-03-19 16:24:43,485 - INFO - Starting Flask server...
+2025-03-19 16:24:43,591 - WARNING -  * Debugger is active!
+2025-03-19 16:24:43,599 - INFO -  * Debugger PIN: 123-530-883
+2025-03-19 16:24:45,489 - INFO - Opening browser for frontend.
+2025-03-19 16:24:46,099 - INFO - 127.0.0.1 - - [19/Mar/2025 16:24:46] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-19 16:24:46,147 - INFO - 127.0.0.1 - - [19/Mar/2025 16:24:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-03-19 16:24:46,150 - INFO - 127.0.0.1 - - [19/Mar/2025 16:24:46] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
