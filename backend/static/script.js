@@ -1,18 +1,19 @@
 document.getElementById('startQuiz').addEventListener('click', async function () {
     document.getElementById('intro').classList.add('hidden');
     document.getElementById('quizContainer').classList.remove('hidden');
-
     startLoadingAnimation();
     await fetchTriviaQuestion();
 });
 
 document.getElementById('nextQuestion').addEventListener('click', async function () {
+    console.log("Next question button clicked. Fetching new question...");
     resetUI();
     startLoadingAnimation();
     await fetchTriviaQuestion();
 });
 
 document.getElementById('skipQuestion').addEventListener('click', async function () {
+    console.log("Skip question button clicked. Fetching new question...");
     resetUI();
     startLoadingAnimation();
     await fetchTriviaQuestion();
@@ -21,7 +22,7 @@ document.getElementById('skipQuestion').addEventListener('click', async function
 const loadingMessages = [
     "Thinking of a challenging question",
     "Gathering trivia knowledge",
-    "Crafting an exciting question for you",
+    "Crafting an exciting question",
     "Analyzing historical facts",
     "Digging deep into the trivia archives",
     "Formulating an interesting question",
@@ -46,20 +47,20 @@ function startLoadingAnimation() {
     }, 8000);
 }
 
-async function fetchTriviaQuestion(retries = 3) {
+async function fetchTriviaQuestion() {
+    console.log("Fetching a new trivia question from API...");
     const response = await fetch('/api/trivia');
     const data = await response.json();
 
+    if (data.end) {
+        document.getElementById('quizContainer').innerHTML = `<h2>Your Score: ${data.score} / 5</h2>`;
+        return;
+    }
+
     if (data.error) {
-        if (retries > 0) {
-            console.log("Error fetching question. Retrying...");
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            return fetchTriviaQuestion(retries - 1);
-        } else {
-            console.error("Failed to fetch trivia question after multiple attempts.");
-            document.getElementById('questionText').innerHTML = "Still preparing your question... Hang tight!";
-            return;
-        }
+        console.log("Error fetching question, retrying...");
+        document.getElementById('questionText').innerHTML = "Still preparing your question... Hang tight!";
+        return;
     }
 
     clearInterval(loadingInterval);
@@ -72,37 +73,42 @@ async function fetchTriviaQuestion(retries = 3) {
     });
 
     document.getElementById('optionsContainer').innerHTML = optionsHTML;
-
+    document.getElementById('nextQuestion').classList.add('hidden');
     document.getElementById('skipQuestion').classList.remove('hidden');
 }
 
-function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
+async function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
     const allOptions = document.querySelectorAll('.option');
 
     allOptions.forEach(option => {
         option.disabled = true;
     });
 
-    const checkSVG = `<svg class="svg-icon" fill="white" viewBox="0 0 24 24"><path d="M9 16.2l-4.2-4.2-1.4 1.4 5.6 5.6 12-12-1.4-1.4z"/></svg>`;
-    const crossSVG = `<svg class="svg-icon" fill="white" viewBox="0 0 24 24"><path d="M18.3 5.7l-1.4-1.4-5.6 5.6-5.6-5.6-1.4 1.4 5.6 5.6-5.6 5.6 1.4 1.4 5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6z"/></svg>`;
+    const response = await fetch(`/api/answer/${chosenAnswer}/${correctAnswer}`);
+    const result = await response.json();
 
-    if (chosenAnswer === correctAnswer) {
+    if (result.correct) {
         selectedOption.classList.add('correct');
-        selectedOption.innerHTML += checkSVG;
     } else {
         selectedOption.classList.add('wrong');
-        selectedOption.innerHTML += crossSVG;
-
         allOptions.forEach(option => {
             if (option.innerText.trim() === correctAnswer) {
                 option.classList.add('correct');
-                option.innerHTML += checkSVG;
             }
         });
     }
 
-    document.getElementById('nextQuestion').classList.remove('hidden');
-    document.getElementById('skipQuestion').classList.add('hidden');
+    if (result.score === 5) {
+        document.getElementById('nextQuestion').classList.add('hidden');
+        document.getElementById('skipQuestion').classList.add('hidden');
+        document.getElementById('quizContainer').innerHTML += `<button id="showResults">🏆 Show Results</button>`;
+        document.getElementById('showResults').addEventListener('click', () => {
+            document.getElementById('quizContainer').innerHTML = `<h2>Your Score: ${result.score} / 5</h2>`;
+        });
+    } else {
+        document.getElementById('nextQuestion').classList.remove('hidden');
+        document.getElementById('skipQuestion').classList.add('hidden');
+    }
 }
 
 function resetUI() {

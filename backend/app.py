@@ -6,16 +6,16 @@ import json
 import re
 import os
 import logging
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file, session
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24) 
 
 FRONTEND_PATH = r"D:\Trivia Game\frontend\index.html"
 
 logging.basicConfig(filename="llm.log", level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 def extract_json(response_text):
-    """Extracts JSON from the LLM response."""
     match = re.search(r'\{.*\}', response_text, re.DOTALL)
     if match:
         try:
@@ -28,7 +28,6 @@ def extract_json(response_text):
     return None
 
 def get_trivia_question():
-    """Fetches a trivia question from the LLM."""
     prompt = """
     Generate a trivia question with 4 multiple-choice answers.
     Return ONLY a valid JSON object, with no extra text.
@@ -40,7 +39,6 @@ def get_trivia_question():
         "correctAnswer": "..."
     }
     """
-
     logging.info("Sending prompt to LLM...")
     
     command = ["ollama", "run", "deepseek-r1:1.5b", prompt]
@@ -63,25 +61,57 @@ def get_trivia_question():
 
 @app.route('/api/trivia', methods=['GET'])
 def trivia():
-    """API endpoint to return a trivia question."""
-    logging.info("Trivia API called. Fetching question...")
+    if 'question_count' not in session:
+        session['question_count'] = 0
+        session['score'] = 0
+
+    logging.info(f"Current Question Count: {session['question_count']}")
+
+    if session['question_count'] >= 5:
+        logging.info("Quiz completed. Sending final score.")
+        return jsonify({"end": True, "score": session['score']})
+
+    logging.info("Fetching new trivia question...")
+
     question = get_trivia_question()
     if question:
-        logging.info("Trivia question successfully retrieved and sent to frontend.")
+        session['question_count'] += 1
+        session.modified = True
+        logging.info(f"New question generated. Total questions asked: {session['question_count']}")
         return jsonify(question)
+
     logging.error("Failed to fetch trivia question.")
     return jsonify({"error": "Failed to fetch question"}), 500
 
+@app.route('/api/answer/<chosen>/<correct>', methods=['GET'])
+def answer(chosen, correct):
+    if 'score' not in session:
+        session['score'] = 0
+
+    correct_choice = chosen == correct
+    if correct_choice:
+        session['score'] += 1
+
+    session.modified = True
+    logging.info(f"User answered: {chosen} | Correct: {correct_choice} | Score: {session['score']}")
+    return jsonify({"correct": correct_choice, "score": session['score']})
+
+@app.route('/api/restart', methods=['GET'])
+def restart_quiz():
+    session['question_count'] = 0
+    session['score'] = 0
+    session.modified = True
+    logging.info("Quiz restarted.")
+    return jsonify({"message": "Quiz restarted."})
+
 @app.route('/')
 def serve_frontend():
-    """Serve the frontend HTML file."""
     if os.path.exists(FRONTEND_PATH):
         return send_file(FRONTEND_PATH)
     logging.error("Frontend HTML file not found.")
     return "Frontend not found!", 404
 
 def open_browser():
-    
     time.sleep(2)  
     logging.info("Opening browser for frontend.")
     webbrowser.open("http://127.0.0.1:5000")

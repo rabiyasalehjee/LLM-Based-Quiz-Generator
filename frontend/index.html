@@ -9,23 +9,24 @@
 <body>
     <div class="container">
         <div id="intro">
-            <h1>🔥 Welcome to the Trivia Challenge! 🔥</h1>
+            <h1><span style="color:yellow;">🔥</span> Welcome to the Trivia Challenge! <span style="color:yellow;">🔥</span></h1>
             <p>Are you ready to test your knowledge?</p>
-            <p>🎯 Rules:</p>
-            <ul>
+            <p style="text-align: left;">🎯 Rules:</p>
+            <ul style="text-align: left;">
                 <li>🧠 Answer multiple-choice questions</li>
                 <li>⏳ No time limit, just have fun!</li>
-                <li>🎉 Get correct answers and challenge your friends!</li>
+                <li>🎉 Check your final score at the end!</li>
             </ul>
             <button id="startQuiz">🚀 Start Quiz</button>
         </div>
-        
+
         <div id="quizContainer" class="hidden">
             <h2 id="questionText">Loading question...</h2>
             <div id="optionsContainer"></div>
             <div id="buttonsContainer">
                 <button id="nextQuestion" class="hidden">➡ Next Question</button>
                 <button id="skipQuestion" class="hidden">⏭ Skip Question</button>
+                <button id="showResults" class="hidden">🏆 Show Results</button>
             </div>
         </div>
     </div>
