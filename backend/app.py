@@ -43,21 +43,31 @@ def get_trivia_question():
     
     command = ["ollama", "run", "deepseek-r1:1.5b", prompt]
     
-    try:
-        response = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', check=False)
+    for attempt in range(3):
+        try:
+            response = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', check=False, timeout=120)
+            
+            if response.returncode == 0:
+                logging.info("LLM Response received successfully.")
+                extracted_data = extract_json(response.stdout.strip())
+                if extracted_data:
+                    logging.info(f"Extracted Trivia JSON: {extracted_data}")
+                    return extracted_data
+                else:
+                    logging.warning(f"Attempt {attempt + 1}: Invalid JSON, retrying...")
+            else:
+                logging.error(f"LLM execution failed with error: {response.stderr.strip()}")
+        except Exception as e:
+            logging.error(f"Exception occurred while running LLM: {str(e)}")
         
-        if response.returncode == 0:
-            logging.info("LLM Response received successfully.")
-            extracted_data = extract_json(response.stdout.strip())
-            if extracted_data:
-                logging.info(f"Extracted Trivia JSON: {extracted_data}")
-            return extracted_data
-        else:
-            logging.error(f"LLM execution failed with error: {response.stderr.strip()}")
-    except Exception as e:
-        logging.error(f"Exception occurred while running LLM: {str(e)}")
-    
-    return None
+        time.sleep(2)  
+
+    logging.error("All attempts failed. Returning fallback question.")
+    return {
+        "question": "What is the capital of France?",
+        "options": ["Paris", "London", "Berlin", "Madrid"],
+        "correctAnswer": "Paris"
+    }
 
 @app.route('/api/trivia', methods=['GET'])
 def trivia():
@@ -72,7 +82,6 @@ def trivia():
         return jsonify({"end": True, "score": session['score']})
 
     logging.info("Fetching new trivia question...")
-
     question = get_trivia_question()
     if question:
         session['question_count'] += 1

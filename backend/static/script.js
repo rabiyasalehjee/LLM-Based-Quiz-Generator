@@ -1,19 +1,20 @@
+let userAnswers = [];
+
 document.getElementById('startQuiz').addEventListener('click', async function () {
     document.getElementById('intro').classList.add('hidden');
     document.getElementById('quizContainer').classList.remove('hidden');
+    userAnswers = [];
     startLoadingAnimation();
     await fetchTriviaQuestion();
 });
 
 document.getElementById('nextQuestion').addEventListener('click', async function () {
-    console.log("Next question button clicked. Fetching new question...");
     resetUI();
     startLoadingAnimation();
     await fetchTriviaQuestion();
 });
 
 document.getElementById('skipQuestion').addEventListener('click', async function () {
-    console.log("Skip question button clicked. Fetching new question...");
     resetUI();
     startLoadingAnimation();
     await fetchTriviaQuestion();
@@ -35,12 +36,10 @@ let dots = "";
 
 function startLoadingAnimation() {
     document.getElementById('questionText').innerHTML = `Loading question<span class="loading-dots">...</span>`;
-
     dotInterval = setInterval(() => {
         dots = dots.length < 3 ? dots + "." : "";
         document.querySelector(".loading-dots").innerHTML = dots;
     }, 500);
-
     loadingInterval = setInterval(() => {
         document.getElementById('questionText').innerHTML = `${loadingMessages[index]} <span class="loading-dots">${dots}</span>`;
         index = (index + 1) % loadingMessages.length;
@@ -48,41 +47,62 @@ function startLoadingAnimation() {
 }
 
 async function fetchTriviaQuestion() {
-    console.log("Fetching a new trivia question from API...");
-    const response = await fetch('/api/trivia');
-    const data = await response.json();
+    let attempts = 0;
+    const maxAttempts = 3;
 
-    if (data.end) {
-        document.getElementById('quizContainer').innerHTML = `<h2>Your Score: ${data.score} / 5</h2>`;
-        return;
+    while (attempts < maxAttempts) {
+        try {
+            const response = await fetch('/api/trivia');
+            const data = await response.json();
+
+            if (data.end) {
+                showResults(data.score);
+                return;
+            }
+
+            if (data.error) {
+                console.log(`Attempt ${attempts + 1} failed: ${data.error}`);
+                attempts++;
+                if (attempts === maxAttempts) {
+                    document.getElementById('questionText').innerHTML = "Failed to load question. Please try restarting.";
+                    clearInterval(loadingInterval);
+                    clearInterval(dotInterval);
+                    return;
+                }
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                continue;
+            }
+
+            clearInterval(loadingInterval);
+            clearInterval(dotInterval);
+            document.getElementById('questionText').innerHTML = data.question;
+
+            let optionsHTML = "";
+            data.options.forEach(option => {
+                optionsHTML += `<button class="option" onclick="checkAnswer(this, '${option.trim()}', '${data.correctAnswer.trim()}', '${data.question}')">${option}</button>`;
+            });
+
+            document.getElementById('optionsContainer').innerHTML = optionsHTML;
+            document.getElementById('nextQuestion').classList.add('hidden');
+            document.getElementById('skipQuestion').classList.remove('hidden');
+            return;
+        } catch (error) {
+            console.error(`Fetch error: ${error}`);
+            attempts++;
+            if (attempts === maxAttempts) {
+                document.getElementById('questionText').innerHTML = "Failed to load question. Please try restarting.";
+                clearInterval(loadingInterval);
+                clearInterval(dotInterval);
+                return;
+            }
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
     }
-
-    if (data.error) {
-        console.log("Error fetching question, retrying...");
-        document.getElementById('questionText').innerHTML = "Still preparing your question... Hang tight!";
-        return;
-    }
-
-    clearInterval(loadingInterval);
-    clearInterval(dotInterval);
-    document.getElementById('questionText').innerHTML = data.question;
-
-    let optionsHTML = "";
-    data.options.forEach(option => {
-        optionsHTML += `<button class="option" onclick="checkAnswer(this, '${option.trim()}', '${data.correctAnswer.trim()}')">${option}</button>`;
-    });
-
-    document.getElementById('optionsContainer').innerHTML = optionsHTML;
-    document.getElementById('nextQuestion').classList.add('hidden');
-    document.getElementById('skipQuestion').classList.remove('hidden');
 }
 
-async function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
+async function checkAnswer(selectedOption, chosenAnswer, correctAnswer, question) {
     const allOptions = document.querySelectorAll('.option');
-
-    allOptions.forEach(option => {
-        option.disabled = true;
-    });
+    allOptions.forEach(option => option.disabled = true);
 
     const response = await fetch(`/api/answer/${chosenAnswer}/${correctAnswer}`);
     const result = await response.json();
@@ -98,17 +118,48 @@ async function checkAnswer(selectedOption, chosenAnswer, correctAnswer) {
         });
     }
 
+    userAnswers.push({
+        question: question,
+        userAnswer: chosenAnswer,
+        correctAnswer: correctAnswer
+    });
+
     if (result.score === 5) {
         document.getElementById('nextQuestion').classList.add('hidden');
         document.getElementById('skipQuestion').classList.add('hidden');
-        document.getElementById('quizContainer').innerHTML += `<button id="showResults">🏆 Show Results</button>`;
-        document.getElementById('showResults').addEventListener('click', () => {
-            document.getElementById('quizContainer').innerHTML = `<h2>Your Score: ${result.score} / 5</h2>`;
-        });
+        document.getElementById('showResults').classList.remove('hidden');
     } else {
         document.getElementById('nextQuestion').classList.remove('hidden');
         document.getElementById('skipQuestion').classList.add('hidden');
     }
+}
+
+function showResults(score) {
+    document.getElementById('quizContainer').classList.add('hidden');
+    document.getElementById('resultsContainer').classList.remove('hidden');
+    document.getElementById('finalScore').innerText = `${score} / 5`;
+
+    let resultsHTML = "";
+    userAnswers.forEach(answer => {
+        resultsHTML += `
+            <tr>
+                <td>${answer.question}</td>
+                <td>${answer.userAnswer}</td>
+                <td>${answer.correctAnswer}</td>
+            </tr>
+        `;
+    });
+    document.getElementById('resultsBody').innerHTML = resultsHTML;
+
+    document.getElementById('restartQuiz').addEventListener('click', async () => {
+        await fetch('/api/restart');
+        document.getElementById('resultsContainer').classList.add('hidden');
+        document.getElementById('quizContainer').classList.remove('hidden');
+        userAnswers = [];
+        resetUI();
+        startLoadingAnimation();
+        await fetchTriviaQuestion();
+    }, { once: true });
 }
 
 function resetUI() {
@@ -116,4 +167,5 @@ function resetUI() {
     document.getElementById('optionsContainer').innerHTML = "";
     document.getElementById('nextQuestion').classList.add('hidden');
     document.getElementById('skipQuestion').classList.add('hidden');
+    document.getElementById('showResults').classList.add('hidden');
 }
