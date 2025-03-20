@@ -35,6 +35,7 @@ let index = 0;
 let dots = "";
 
 function startLoadingAnimation() {
+    clearLoadingAnimation();
     document.getElementById('questionText').innerHTML = `Loading question<span class="loading-dots">...</span>`;
     dotInterval = setInterval(() => {
         dots = dots.length < 3 ? dots + "." : "";
@@ -46,16 +47,27 @@ function startLoadingAnimation() {
     }, 8000);
 }
 
+function clearLoadingAnimation() {
+    if (dotInterval) clearInterval(dotInterval);
+    if (loadingInterval) clearInterval(loadingInterval);
+    dotInterval = null;
+    loadingInterval = null;
+    index = 0;
+    dots = "";
+}
+
 async function fetchTriviaQuestion() {
     let attempts = 0;
     const maxAttempts = 3;
 
+    startLoadingAnimation();
     while (attempts < maxAttempts) {
         try {
             const response = await fetch('/api/trivia');
             const data = await response.json();
 
             if (data.end) {
+                clearLoadingAnimation();
                 showResults(data.score);
                 return;
             }
@@ -64,17 +76,15 @@ async function fetchTriviaQuestion() {
                 console.log(`Attempt ${attempts + 1} failed: ${data.error}`);
                 attempts++;
                 if (attempts === maxAttempts) {
+                    clearLoadingAnimation();
                     document.getElementById('questionText').innerHTML = "Failed to load question. Please try restarting.";
-                    clearInterval(loadingInterval);
-                    clearInterval(dotInterval);
                     return;
                 }
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 continue;
             }
 
-            clearInterval(loadingInterval);
-            clearInterval(dotInterval);
+            clearLoadingAnimation();
             document.getElementById('questionText').innerHTML = data.question;
 
             let optionsHTML = "";
@@ -90,9 +100,8 @@ async function fetchTriviaQuestion() {
             console.error(`Fetch error: ${error}`);
             attempts++;
             if (attempts === maxAttempts) {
+                clearLoadingAnimation();
                 document.getElementById('questionText').innerHTML = "Failed to load question. Please try restarting.";
-                clearInterval(loadingInterval);
-                clearInterval(dotInterval);
                 return;
             }
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -157,7 +166,6 @@ function showResults(score) {
         document.getElementById('quizContainer').classList.remove('hidden');
         userAnswers = [];
         resetUI();
-        startLoadingAnimation();
         await fetchTriviaQuestion();
     }, { once: true });
 }

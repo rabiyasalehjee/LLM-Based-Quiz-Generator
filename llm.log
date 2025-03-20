@@ -1,0 +1,103 @@
+2025-03-20 18:47:01,805 - INFO - Starting Flask server...
+2025-03-20 18:47:02,157 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-20 18:47:02,157 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-20 18:47:02,164 - INFO -  * Restarting with stat
+2025-03-20 18:47:02,476 - INFO - Starting Flask server...
+2025-03-20 18:47:02,566 - WARNING -  * Debugger is active!
+2025-03-20 18:47:02,570 - INFO -  * Debugger PIN: 212-010-933
+2025-03-20 18:47:03,809 - INFO - Opening browser for frontend.
+2025-03-20 18:47:04,478 - INFO - Opening browser for frontend.
+2025-03-20 18:47:05,735 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:05] "GET / HTTP/1.1" 200 -
+2025-03-20 18:47:05,744 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:05] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-20 18:47:05,792 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:05] "GET /static/style.css HTTP/1.1" 200 -
+2025-03-20 18:47:05,812 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:05] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+2025-03-20 18:47:06,295 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:06] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-20 18:47:06,382 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:06] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-03-20 18:47:06,384 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:06] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+2025-03-20 18:47:24,267 - INFO - Current Question Count: 0
+2025-03-20 18:47:24,267 - INFO - Fetching new trivia question...
+2025-03-20 18:47:24,267 - INFO - Sending prompt to LLM...
+2025-03-20 18:47:57,589 - INFO - LLM Response received successfully.
+2025-03-20 18:47:57,590 - INFO - Extracting JSON from response.
+2025-03-20 18:47:57,590 - INFO - Extracted Trivia JSON: {'question': 'Who was the first queen of England?', 'options': ['Henry VIII', 'Elizabeth I', 'Joan of Arc', 'Mary I'], 'correctAnswer': 'Henry VIII'}
+2025-03-20 18:47:57,590 - INFO - New question generated. Total questions asked: 1
+2025-03-20 18:47:57,591 - INFO - 127.0.0.1 - - [20/Mar/2025 18:47:57] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:48:12,426 - INFO - User answered: Joan of Arc | Correct: False | Score: 0
+2025-03-20 18:48:12,430 - INFO - 127.0.0.1 - - [20/Mar/2025 18:48:12] "GET /api/answer/Joan%20of%20Arc/Henry%20VIII HTTP/1.1" 200 -
+2025-03-20 18:48:13,960 - INFO - Current Question Count: 1
+2025-03-20 18:48:13,960 - INFO - Fetching new trivia question...
+2025-03-20 18:48:13,960 - INFO - Sending prompt to LLM...
+2025-03-20 18:48:56,265 - INFO - LLM Response received successfully.
+2025-03-20 18:48:56,265 - INFO - Extracting JSON from response.
+2025-03-20 18:48:56,265 - ERROR - JSON decoding error: Extra data: line 1 column 86 (char 85)
+2025-03-20 18:48:56,266 - WARNING - Attempt 1: Invalid JSON, retrying...
+2025-03-20 18:49:21,132 - INFO - LLM Response received successfully.
+2025-03-20 18:49:21,132 - INFO - Extracting JSON from response.
+2025-03-20 18:49:21,133 - INFO - Extracted Trivia JSON: {'question': "Which of the following is Albert Einstein's most famous contribution?", 'options': ['A) He discovered E=mc²', 'B) B. Albert Einstein', 'C) The Theory of Relativity', 'D) He won a Nobel Prize'], 'correctAnswer': 'B'}
+2025-03-20 18:49:21,133 - INFO - New question generated. Total questions asked: 2
+2025-03-20 18:49:21,134 - INFO - 127.0.0.1 - - [20/Mar/2025 18:49:21] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:49:32,754 - INFO - Current Question Count: 2
+2025-03-20 18:49:32,754 - INFO - Fetching new trivia question...
+2025-03-20 18:49:32,754 - INFO - Sending prompt to LLM...
+2025-03-20 18:49:54,322 - INFO - LLM Response received successfully.
+2025-03-20 18:49:54,322 - INFO - Extracting JSON from response.
+2025-03-20 18:49:54,322 - INFO - Extracted Trivia JSON: {'question': "What is the primary component of Earth's core?", 'options': ['Iron', 'Aluminum', 'Silicon', 'Magnesium', 'Calcium', 'Other elements'], 'correctAnswer': 'Iron'}
+2025-03-20 18:49:54,322 - INFO - New question generated. Total questions asked: 3
+2025-03-20 18:49:54,322 - INFO - 127.0.0.1 - - [20/Mar/2025 18:49:54] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:50:01,832 - INFO - Current Question Count: 3
+2025-03-20 18:50:01,832 - INFO - Fetching new trivia question...
+2025-03-20 18:50:01,832 - INFO - Sending prompt to LLM...
+2025-03-20 18:50:26,805 - INFO - LLM Response received successfully.
+2025-03-20 18:50:26,805 - INFO - Extracting JSON from response.
+2025-03-20 18:50:26,808 - INFO - Extracted Trivia JSON: {'question': 'Which of the following countries has the capital city known as Brasília?', 'options': ['China', 'Japan', 'Brazil', 'USA'], 'correctAnswer': 3}
+2025-03-20 18:50:26,808 - INFO - New question generated. Total questions asked: 4
+2025-03-20 18:50:26,809 - INFO - 127.0.0.1 - - [20/Mar/2025 18:50:26] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:50:28,843 - INFO - Current Question Count: 4
+2025-03-20 18:50:28,843 - INFO - Fetching new trivia question...
+2025-03-20 18:50:28,843 - INFO - Sending prompt to LLM...
+2025-03-20 18:50:40,879 - INFO - LLM Response received successfully.
+2025-03-20 18:50:40,879 - INFO - Extracting JSON from response.
+2025-03-20 18:50:40,880 - INFO - Extracted Trivia JSON: {'question': 'What is the title of the first book ever published?', 'options': ['The Great Commission', 'Easter Bible', 'The Bible', 'The Holy\u4e66'], 'correctAnswer': 'The Great Commission'}
+2025-03-20 18:50:40,880 - INFO - New question generated. Total questions asked: 5
+2025-03-20 18:50:40,881 - INFO - 127.0.0.1 - - [20/Mar/2025 18:50:40] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:51:03,463 - INFO - User answered: The Great Commission | Correct: True | Score: 1
+2025-03-20 18:51:03,465 - INFO - 127.0.0.1 - - [20/Mar/2025 18:51:03] "GET /api/answer/The%20Great%20Commission/The%20Great%20Commission HTTP/1.1" 200 -
+2025-03-20 18:51:06,730 - INFO - Current Question Count: 5
+2025-03-20 18:51:06,730 - INFO - Quiz completed. Sending final score.
+2025-03-20 18:51:06,730 - INFO - 127.0.0.1 - - [20/Mar/2025 18:51:06] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:51:16,190 - INFO - Quiz restarted.
+2025-03-20 18:51:16,192 - INFO - 127.0.0.1 - - [20/Mar/2025 18:51:16] "GET /api/restart HTTP/1.1" 200 -
+2025-03-20 18:51:16,202 - INFO - Current Question Count: 0
+2025-03-20 18:51:16,207 - INFO - Fetching new trivia question...
+2025-03-20 18:51:16,207 - INFO - Sending prompt to LLM...
+2025-03-20 18:53:16,244 - ERROR - Exception occurred while running LLM: Command '['ollama', 'run', 'deepseek-r1:1.5b', '\n    Generate a trivia question with 4 multiple-choice answers.\n    Return ONLY a valid JSON object, with no extra text.\n\n    Format:\n    {\n        "question": "...",\n        "options": ["...", "...", "...", "..."],\n        "correctAnswer": "..."\n    }\n    ']' timed out after 120 seconds
+2025-03-20 18:53:54,746 - INFO - LLM Response received successfully.
+2025-03-20 18:53:54,746 - INFO - Extracting JSON from response.
+2025-03-20 18:53:54,746 - INFO - Extracted Trivia JSON: {'question': 'What is the boiling temperature of water at sea level?', 'options': ['50°C', '60°C', '80°C', '100°C'], 'correctAnswer': '100°C'}
+2025-03-20 18:53:54,746 - INFO - New question generated. Total questions asked: 1
+2025-03-20 18:53:54,748 - INFO - 127.0.0.1 - - [20/Mar/2025 18:53:54] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:53:57,870 - INFO - User answered: 50°C | Correct: False | Score: 0
+2025-03-20 18:53:57,872 - INFO - 127.0.0.1 - - [20/Mar/2025 18:53:57] "GET /api/answer/50°C/100°C HTTP/1.1" 200 -
+2025-03-20 18:53:58,632 - INFO - Current Question Count: 1
+2025-03-20 18:53:58,632 - INFO - Fetching new trivia question...
+2025-03-20 18:53:58,632 - INFO - Sending prompt to LLM...
+2025-03-20 18:55:38,655 - INFO - LLM Response received successfully.
+2025-03-20 18:55:38,655 - INFO - Extracting JSON from response.
+2025-03-20 18:55:38,655 - ERROR - JSON decoding error: Extra data: line 7 column 1 (char 98)
+2025-03-20 18:55:38,655 - WARNING - Attempt 1: Invalid JSON, retrying...
+2025-03-20 18:56:09,025 - INFO - LLM Response received successfully.
+2025-03-20 18:56:09,025 - INFO - Extracting JSON from response.
+2025-03-20 18:56:09,025 - INFO - Extracted Trivia JSON: {'question': 'Who was Napoleon Bonaparte?', 'options': ['He was a French nobleman who early on became involved in the French military.', 'He was part of the French army during its early years and later served as prime minister.', "He played a significant role in the invasion into Russia after Napoleon's election to the French Senate.", 'His most famous contributions were his involvement in the Russian-Prussian War and political influence.'], 'correctAnswer': 'He was a French nobleman who early on became involved in the French military.'}
+2025-03-20 18:56:09,025 - INFO - New question generated. Total questions asked: 2
+2025-03-20 18:56:09,025 - INFO - 127.0.0.1 - - [20/Mar/2025 18:56:09] "GET /api/trivia HTTP/1.1" 200 -
+2025-03-20 18:57:00,325 - INFO -  * Detected change in 'D:\\Trivia Game\\backend\\app.py', reloading
+2025-03-20 18:57:00,419 - INFO -  * Restarting with stat
+2025-03-20 18:57:00,945 - INFO - Starting Flask server...
+2025-03-20 18:57:01,017 - WARNING -  * Debugger is active!
+2025-03-20 18:57:01,019 - INFO -  * Debugger PIN: 212-010-933
+2025-03-20 18:57:02,949 - INFO - Opening browser for frontend.
+2025-03-20 18:57:03,514 - INFO - 127.0.0.1 - - [20/Mar/2025 18:57:03] "GET / HTTP/1.1" 200 -
+2025-03-20 18:57:03,619 - INFO - 127.0.0.1 - - [20/Mar/2025 18:57:03] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-03-20 18:57:03,628 - INFO - 127.0.0.1 - - [20/Mar/2025 18:57:03] "GET /static/script.js HTTP/1.1" 200 -
+2025-03-20 18:57:14,801 - INFO -  * Detected change in 'D:\\Trivia Game\\backend\\app.py', reloading
